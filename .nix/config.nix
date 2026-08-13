@@ -11,8 +11,12 @@
     coqPackages = {
       coq.override.version = "9.0";
       mathcomp.job = false;
-      mathcomp.override.version = "2.3.0";
-      mathcomp-analysis.override.version = "1.12.0";
+      # MathComp >= 2.4.0 is required by the ringType -> nzRingType renaming
+      # in the sources; 2.5.0 + analysis 1.16.0 is the newest combination
+      # whose released extructures/mathcomp-word are compatible (analysis
+      # 1.17.0 requires MathComp 2.6.0, which they do not support yet).
+      mathcomp.override.version = "2.5.0";
+      mathcomp-analysis.override.version = "1.16.0";
     }; rocqPackages = {
       rocq-core.override.version = "9.0";
     };
@@ -22,8 +26,8 @@
     coqPackages = {
       coq.override.version = "9.1";
       mathcomp.job = false;
-      mathcomp.override.version = "2.4.0";
-      mathcomp-analysis.override.version = "1.12.0";
+      mathcomp.override.version = "2.5.0";
+      mathcomp-analysis.override.version = "1.16.0";
     }; rocqPackages = {
       rocq-core.override.version = "9.1";
     };
