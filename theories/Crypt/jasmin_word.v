@@ -91,6 +91,17 @@ Coercion nat_of_pelem (pe: pelem) : nat :=
 
 Definition word sz : comRingType := (wsize_size_minus_1 sz).+1.-word.
 
+(* The raw record carrier of [word sz].  Definitionally equal to [word sz]
+   as a type, but universe-small ([word.word : nat -> Set]): use it in
+   positions that must not absorb the HB comRingType pack -- e.g. a VST
+   funspec WITH-telescope, where the HB-packed [word sz] causes a universe
+   inconsistency against any development that loaded [deriving].
+   ([Global Opaque word] below otherwise forces downstream users to
+   re-derive this spelling by hand.) *)
+Definition wcarrier (sz : wsize) : Set := (wsize_size_minus_1 sz).+1.-word.
+Lemma wcarrierE sz : wcarrier sz = word sz :> Type.
+Proof. reflexivity. Qed.
+
 Global Opaque word.
 
 Local Open Scope Z_scope.
