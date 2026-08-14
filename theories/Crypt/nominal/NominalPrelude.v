@@ -139,6 +139,24 @@ Notation "[ f ] ' p { e }" :=
   format "[ f ]  ' p  { '[' '/'  e  '/' ']' }")
   : package_scope.
 
+(* Parenthesised pattern binders, so that a package can be written uniformly
+   with `( x )` and `( '(m, s) )`. Parsing only: the unparenthesised shapes
+   above stay the ones used for printing. *)
+
+Notation "[ f ] : { A ~> B } ( ' p ) { e }" :=
+  ((f, mkdef A B (λ p, e)))
+  (in custom package at level 0,
+  f constr, e constr, p pattern, A constr, B constr,
+  only parsing)
+  : package_scope.
+
+Notation "[ f ] ( ' p ) { e }" :=
+  ((f, mkdef _ _ (λ p, e)))
+  (in custom package at level 0,
+  f constr, e constr, p pattern,
+  only parsing)
+  : package_scope.
+
 Notation "'call' [ f ] : { A ~> B } x" :=
   (opr (mkopsig f A B) x (λ y, ret y))
   (at level 99, x at next level, right associativity,
