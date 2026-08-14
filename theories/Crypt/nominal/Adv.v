@@ -2,7 +2,7 @@ Set Warnings "-notation-overridden,-ambiguous-paths".
 From mathcomp Require Import all_ssreflect all_algebra
   reals distr realsum fingroup solvable.cyclic.
 Set Warnings "notation-overridden,ambiguous-paths".
-Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
+#[local] Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
 
 From Stdlib Require Import Utf8 Setoids.Setoid Classes.Morphisms.
 From extructures Require Import ord fset fmap ffun fperm.

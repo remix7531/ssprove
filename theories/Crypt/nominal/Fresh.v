@@ -3,7 +3,7 @@ From mathcomp Require Import all_ssreflect all_algebra reals distr realsum
   fingroup solvable.cyclic prime ssrnat ssreflect ssrfun ssrbool ssrnum
   eqtype choice seq.
 Set Warnings "notation-overridden,ambiguous-paths".
-Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
+#[local] Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
 
 From Stdlib Require Import Utf8.
 From extructures Require Import ord fset fmap ffun fperm.

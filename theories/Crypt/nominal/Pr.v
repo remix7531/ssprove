@@ -34,7 +34,7 @@ Set Equations Transparent.
 
 Import PackageNotation.
 
-Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
+#[local] Unset SsrOldRewriteGoalsOrder. (* remove the line when requiring MathComp >= 2.6 *)
 Set Bullet Behavior "Strict Subproofs".
 Set Default Goal Selector "!".
 Set Primitive Projections.
