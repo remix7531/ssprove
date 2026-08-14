@@ -1,4 +1,4 @@
-From Stdlib Require Import Utf8.
+From Stdlib Require Import Utf8 Setoids.Setoid Classes.Morphisms.
 Set Warnings "-ambiguous-paths,-notation-overridden,-notation-incompatible-format".
 
 From mathcomp Require Import ssrnat ssreflect ssrfun ssrbool ssrnum eqtype
@@ -10,6 +10,12 @@ From Equations Require Import Equations.
 
 From SSProve.Crypt Require Import Axioms SubDistr pkg_composition
   Prelude Package Nominal.
+
+(* The `Program Definition`s below are written against Program's own
+   obligation tactic; Equations installs a different one above.  Until now
+   this file got `program_simpl` back by accident, through the `SetoidClass`
+   export in `Nominal.v`. *)
+From Stdlib Require Import Program.Tactics.
 
 From HB Require Import structures.
 

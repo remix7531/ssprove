@@ -578,7 +578,14 @@ Qed.
 
 (* alpha-equivalence *)
 
-Require Export Stdlib.Classes.SetoidClass.
+(* [Require Import], not [Require Export]: SetoidClass's [x == y] is the
+   Prop-valued [equiv] in [type_scope], and as the last-declared
+   interpretation it captures every bare [==] in files that import the
+   nominal stack, MathComp's boolean [eq_op] included.  What downstream
+   users need from here is the setoid *instances* below, and those are
+   exported by [Add Parametric Relation] / [Add Parametric Morphism]
+   independently of this line. *)
+Require Import Stdlib.Classes.SetoidClass.
 
 Definition alpha {X} (x₀ x₁ : X) :=
   ∃ π, π ∙ x₀ = x₁.
