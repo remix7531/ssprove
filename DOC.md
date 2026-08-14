@@ -25,6 +25,7 @@ improved. If you find something missing or not clear enough, feel free to
    1. [Massaging relational judgments]
    1. [Proving relational judgments]
    1. [Crafting invariants]
+1. [Mixing SSProve with other libraries]
 
 ## Writing packages
 
@@ -1112,6 +1113,22 @@ the remembered values.
 It is also possible to define additional location couplings using any finite
 combination of locations from either side with `rel_app`.
 
+## Mixing SSProve with other libraries
+
+If your file loads SSProve next to another large Rocq stack (VST/CompCert, for
+instance), the delimiters `%Z` and `%N` may not mean what you expect: `Delimit
+Scope` is replayed on every `Import`, so the last library you imported decides.
+`SSProve.Crypt.Compat` re-pins the three delimiters that get this wrong,
+re-exports the MathComp and jasmin-word surface under the usual warning block,
+and lists the coexistence rules that cannot be enforced from a module (import
+order, `(x == y)%B`, universe-small carriers in dependent telescopes, and
+keeping twin definitions on the same scope stack). Require it *last*, below
+your other imports:
+
+```coq
+From SSProve.Crypt Require Import Compat.
+```
+
 
 [Writing packages]: #writing-packages
 [Raw code]: #raw-code
@@ -1127,6 +1144,7 @@ combination of locations from either side with `rel_app`.
 [Massaging relational judgments]: #massaging-relational-judgments
 [Proving relational judgments]: #proving-relational-judgments
 [Crafting invariants]: #crafting-invariants
+[Mixing SSProve with other libraries]: #mixing-ssprove-with-other-libraries
 
 [extructures]: https://github.com/arthuraa/extructures
 
