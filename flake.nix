@@ -13,8 +13,10 @@
         mkCoqDerivation {
           pname = "ssprove";
           owner = "SSProve";
-          version = "0.2.0";
-          src = ./.;
+          version = {
+            version = "0.3.1+remix.1";
+            fetcher = _: ./.;
+          };
           propagatedBuildInputs = [
             equations
             mathcomp-analysis
@@ -32,6 +34,8 @@
     in {
       overlays.default = final: prev: {
         coqPackages_9_0 = prev.coqPackages_9_0.overrideScope (self: super: {
+          mathcomp-word = super.mathcomp-word.overrideAttrs
+            (import ./.nix/mathcomp-word-3.5.nix { inherit (prev) lib fetchurl; });
           ssprove  = self.callPackage ssprovePkg {};
         });
       };

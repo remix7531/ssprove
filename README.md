@@ -42,6 +42,15 @@ well as listing the small set of axioms on which the formalisation relies
 
 ## Installation
 
+This fork's maintenance version is `0.3.1+remix.1`. It includes upstream
+PRs [123](https://github.com/SSProve/ssprove/pull/123) and
+[124](https://github.com/SSProve/ssprove/pull/124), with Rocq 9.0.1,
+MathComp 2.5.0, MathComp Analysis 1.16.0 and mathcomp-word 3.5.
+This release keeps MathComp below 2.6 because word 3.5 does not support it.
+
+Build this checkout with `nix develop . --command make -j4`, or install it
+into an existing opam switch with `opam install .`.
+
 There are two installation options:
 - via `opam`
 - via `nix`
