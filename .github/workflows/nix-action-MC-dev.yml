@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Determine which commit to initially checkout
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"target_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"target_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  echo \"target_commit=${{ github.event.pull_request.head.sha
         }}\" >> $GITHUB_ENV\nfi\n"
     - name: Git checkout
@@ -14,7 +14,7 @@ jobs:
         fetch-depth: 0
         ref: ${{ env.target_commit }}
     - name: Determine which commit to test
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"tested_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"tested_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  merge_commit=$(git ls-remote ${{ github.event.repository.html_url
         }} refs/pull/${{ github.event.number }}/merge | cut -f1)\n  mergeable=$(git
         merge --no-commit --no-ff ${{ github.event.pull_request.base.sha }} > /dev/null
@@ -34,7 +34,8 @@ jobs:
     - name: Cachix setup ssprove
       uses: cachix/cachix-action@v17
       with:
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        authToken: ${{ github.event_name == 'push' && secrets.CACHIX_AUTH_TOKEN || '' }}
+        skipPush: ${{ github.event_name != 'push' || secrets.CACHIX_AUTH_TOKEN == '' }}
         extraPullNames: coq, coq-community, math-comp
         name: ssprove
     - id: stepGetDerivation
@@ -63,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Determine which commit to initially checkout
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"target_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"target_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  echo \"target_commit=${{ github.event.pull_request.head.sha
         }}\" >> $GITHUB_ENV\nfi\n"
     - name: Git checkout
@@ -72,7 +73,7 @@ jobs:
         fetch-depth: 0
         ref: ${{ env.target_commit }}
     - name: Determine which commit to test
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"tested_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"tested_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  merge_commit=$(git ls-remote ${{ github.event.repository.html_url
         }} refs/pull/${{ github.event.number }}/merge | cut -f1)\n  mergeable=$(git
         merge --no-commit --no-ff ${{ github.event.pull_request.base.sha }} > /dev/null
@@ -92,7 +93,8 @@ jobs:
     - name: Cachix setup ssprove
       uses: cachix/cachix-action@v17
       with:
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        authToken: ${{ github.event_name == 'push' && secrets.CACHIX_AUTH_TOKEN || '' }}
+        skipPush: ${{ github.event_name != 'push' || secrets.CACHIX_AUTH_TOKEN == '' }}
         extraPullNames: coq, coq-community, math-comp
         name: ssprove
     - id: stepGetDerivation
@@ -118,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Determine which commit to initially checkout
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"target_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"target_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  echo \"target_commit=${{ github.event.pull_request.head.sha
         }}\" >> $GITHUB_ENV\nfi\n"
     - name: Git checkout
@@ -127,7 +129,7 @@ jobs:
         fetch-depth: 0
         ref: ${{ env.target_commit }}
     - name: Determine which commit to test
-      run: "if [ ${{ github.event_name }} = \"push\" ]; then\n  echo \"tested_commit=${{
+      run: "if [ ${{ github.event_name }} != \"pull_request\" ]; then\n  echo \"tested_commit=${{
         github.sha }}\" >> $GITHUB_ENV\nelse\n  merge_commit=$(git ls-remote ${{ github.event.repository.html_url
         }} refs/pull/${{ github.event.number }}/merge | cut -f1)\n  mergeable=$(git
         merge --no-commit --no-ff ${{ github.event.pull_request.base.sha }} > /dev/null
@@ -147,7 +149,8 @@ jobs:
     - name: Cachix setup ssprove
       uses: cachix/cachix-action@v17
       with:
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        authToken: ${{ github.event_name == 'push' && secrets.CACHIX_AUTH_TOKEN || '' }}
+        skipPush: ${{ github.event_name != 'push' || secrets.CACHIX_AUTH_TOKEN == '' }}
         extraPullNames: coq, coq-community, math-comp
         name: ssprove
     - id: stepGetDerivation
@@ -188,13 +191,11 @@ jobs:
       run: NIXPKGS_ALLOW_UNFREE=1 nix-build --no-out-link --argstr bundle
         "MC-dev" --argstr job "ssprove"
 name: Nix CI for bundle MC-dev
+permissions:
+  contents: read
 on:
   pull_request:
-    paths:
-    - .github/workflows/nix-action-MC-dev.yml
-  pull_request_target:
     paths-ignore:
-    - .github/workflows/nix-action-MC-dev.yml
     - '**.md'
     - '**.gitignore'
     - '**.opam'
