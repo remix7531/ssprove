@@ -26,6 +26,7 @@ improved. If you find something missing or not clear enough, feel free to
    1. [Proving relational judgments]
    1. [Crafting invariants]
 1. [Set-valued word carriers]
+1. [Nominal equality imports]
 
 ## Writing packages
 
@@ -1121,6 +1122,17 @@ when a dependent telescope requires a small carrier. `wcarrierE` relates it
 to the packed word type, and the existing word operations accept its values.
 
 [Set-valued word carriers]: #set-valued-word-carriers
+
+## Nominal equality imports
+
+Nominal imports register alpha-equivalence and its renaming morphism
+without exporting the Prop-valued equality notation from `SetoidClass`.
+The private dependency preserves the Program setup used by nominal code.
+Import `Stdlib.Setoids.Setoid` and `Stdlib.Classes.Morphisms` explicitly
+when declaring parametric morphisms. Import `Stdlib.Classes.SetoidClass`
+explicitly when its `Setoid` interface is needed.
+
+[Nominal equality imports]: #nominal-equality-imports
 [Writing packages]: #writing-packages
 [Raw code]: #raw-code
 [Specialised types]: #specialised-types
